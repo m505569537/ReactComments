@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './component/app'
+
+import Main from './containers/main.jsx'
+import {
+  Provider
+} from 'react-redux'
+import {
+  store
+} from './redux/store.jsx'
+
 
 /*该App是实现用户添加评论的功能
   流程
@@ -23,5 +31,7 @@ import App from './component/app'
   	所以添加和删除评论，只需要修改数组中的元素就行了
 */
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
+ReactDOM.render(
+  <Provider store={store}>
+      <Main />
+  </Provider>, document.getElementById('root'));

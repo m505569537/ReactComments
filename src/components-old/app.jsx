@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 //import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
+
+import NameComment  from './nameComment.jsx'
+import CommentControl  from './commentControl.jsx'
 
 
 export default class App extends Component {
@@ -71,45 +73,6 @@ export default class App extends Component {
 	}
 }
 
-//用户名和评论输入组件
-class NameComment extends Component {
-	/*
-	constructor(props) {
-		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	} */
-	
-	//定义输入的数据属性
-	//NameComment.propTypes 可以看出，它不是对象的属性，而是类的属性
-	static propTypes = {
-	add: PropTypes.func.isRequired
-	}
-
-	handleSubmit = () => {
-		let name = this.iname.value;
-		let comment = this.incomment.value;
-		if(!name||!comment){
-			return;
-		}
-		this.props.add(name, comment);
-		this.iname.value = '';
-		this.incomment.value = '';
-	}
-
-	render(){
-		return (
-			<div className='left'>
-				<p>用户名</p>
-				<input type='text' ref={input => this.iname = input} />
-				<p>评论内容</p>
-				<textarea  className='co_content' ref={textarea => this.incomment = textarea}></textarea>
-				<br />
-				<input type='submit' className='sub' value='提交' onClick={this.handleSubmit} />
-			</div>
-		)
-	}
-}
-
 /*
 //评论控制组件
 class CommentControl extends Component {
@@ -159,58 +122,3 @@ SingleComment.propTypes = {
 	usco: PropTypes.object.isRequired
 }
 */
-
-//评论控制组件
-class CommentControl extends Component {
-
-	static propTypes = {
-	usercomments:PropTypes.array.isRequired,
-	deleteComment:PropTypes.func.isRequired
-	}
-
-	render(){
-		const {usercomments, deleteComment} = this.props;
-		const display = (usercomments.length === 0) ? "block" : "none";
-		return (
-			<div className='right'>
-				<p>评论回复：</p>
-				<div className='comment_box'>
-					<ul ref={ul => this.ul=ul}>
-						{usercomments.map((usercomment, index) => <SingleComment key={index} usco={usercomment} deleteComment={deleteComment} index={index} />)}
-					</ul>	
-					<div className='no_con' style={{display}}>暂无评论，请在左侧添加评论</div>					
-				</div>
-			</div>
-		)
-	}
-}
-
-//单一评论组件
-class SingleComment extends Component {
-
-	static propTypes = {
-	usco: PropTypes.object.isRequired,
-	deleteComment: PropTypes.func.isRequired,
-	index: PropTypes.number.isRequired
-	}
-
-	handleDelete = () => {
-		const {deleteComment, index} = this.props;
-		if(window.confirm('你确定要删除这条评论吗？')){
-			deleteComment(index);
-		}
-
-	}
-
-
-
-	render(){
-		const {usco} = this.props;
-		return (
-			<li className='single'>
-				<p className="pna">{usco.name}说<span className='delete' onClick={this.handleDelete}>删除</span></p>
-				<p className="pco">{usco.comment}</p>
-			</li>
-		)
-	}
-}
